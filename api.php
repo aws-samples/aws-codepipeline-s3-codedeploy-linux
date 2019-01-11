@@ -218,9 +218,6 @@ class PsaUsa {
 	}
 	
 	public function specialPricing() {
-		//quick order form
-		//ups
-		//pretty print cart for email
 		$sql = "SELECT psausa.cart_items.SKU, psausa.cart_items.Quantity, psausa.cart_items.Price, psausa.cart_items.ID
 		FROM psausa.cart_items
 		INNER JOIN psausa.cart ON psausa.cart.Cart = psausa.cart_items.Cart
@@ -765,25 +762,57 @@ class PsaUsa {
 				];
 		}
 
-		//print json_encode($json);
-		$server_error = "";
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_URL, "http://psausabeta.us-east-1.elasticbeanstalk.com/ups.php");
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($json));
-		curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type" => "application/json; charset=utf-8"));
-		//curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1_2'); //SSLVERSION 6 forces tls1.2
-		//CURL_SSLVERSION_TLSv1_2
-		curl_setopt($ch, CURLOPT_SSLVERSION, 6);//CURL_SSLVERSION_TLSv1_2
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		//curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$server_output = curl_exec($ch);
-		if ($server_output === false) $server_error .= "error:".curl_error ($ch );
-		//print $server_error;
-		$vals = json_decode($server_output);
+		if ( false ) {
+			$server_error = "";
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt($ch, CURLOPT_URL, "http://psausabeta.us-east-1.elasticbeanstalk.com/ups.php");
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($json));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type" => "application/json; charset=utf-8"));
+			//curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1_2'); //SSLVERSION 6 forces tls1.2
+			//CURL_SSLVERSION_TLSv1_2
+			curl_setopt($ch, CURLOPT_SSLVERSION, 6);//CURL_SSLVERSION_TLSv1_2
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			//curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			if ($server_output === false) $server_error .= "error:".curl_error ($ch );
+			//print $server_error;
+			$vals = json_decode($server_output);
+		}
+		else {
+			//Configuration
+			$access = "CD57A60DEED4CC2C";
+			$userid = "johnh@oakhillsoftware.com";
+			$passwd = "sugcij-Kakboz-9momru";
+			$shipperNumber = "812290";
+
+			$jsonend = "https://wwwcie.ups.com/rest/Rate";
+			//$jsonend = 'https://onlinetools.ups.com/rest/Rate';
+			$json->UPSSecurity = (object)array( "UsernameToken" => array( "Username" => $userid, "Password" => $passwd ), "ServiceAccessToken" => array( "AccessLicenseNumber" => $access ) );
+
+			$server_error = "";
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt($ch, CURLOPT_URL, $jsonend);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($json));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type" => "application/json; charset=utf-8"));
+			//curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1_2'); //SSLVERSION 6 forces tls1.2
+			//CURL_SSLVERSION_TLSv1_2
+			curl_setopt($ch, CURLOPT_SSLVERSION, 6);//CURL_SSLVERSION_TLSv1_2
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			//curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			if ($server_output === false) $server_error .= "error:".curl_error ($ch );
+			print $server_error;
+			curl_close ($ch);
+			$vals = json_decode($server_output);
+		}
 
 		$rate = 0;
 		$rate = (float)$vals->RateResponse->RatedShipment->TotalCharges->MonetaryValue;
