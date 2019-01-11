@@ -1,0 +1,99 @@
+<div ui-content-for="title">
+	<span>Login</span>
+</div>
+
+<div class="scrollable">
+
+ <div class="pageHeader scrollableHeader" ng-include="'desktopHeader.html'"></div>
+ <div class="scrollable-content">
+
+  <div ui-state id='loginForm' ui-default="true"></div>
+  
+  <div class="btn-group justified nav-tabs">
+	<a  
+	   ui-turn-on="loginForm"
+       ui-class="{'active': loginForm}" 
+	   class="btn btn-default" href>
+		Login
+	</a>
+	<a  
+	   ui-turn-off="loginForm"
+       ui-class="{'active': !loginForm}" 
+	   class="btn btn-default" href>
+		Signup
+	</a>       
+  </div>
+       
+  <form role="form" ng-submit='login()' ui-if="loginForm">
+    <fieldset>
+      <legend>Login</legend>
+        <div class="form-group has-success has-feedback">
+          <label>Username</label>
+          <input type="text"
+                 ng-model="login.user"
+                 class="form-control"
+                 placeholder="Username">
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" 
+          		 ng-model="login.pass"
+                 class="form-control"
+                 placeholder="Password">
+        </div>
+
+    </fieldset>
+    <hr>
+
+    <button class="btn btn-primary btn-block">
+      Login
+    </button>
+  	</form>
+
+	<div ui-content-for="title">
+	  <span>Signup</span>
+	</div>
+
+  	<form role="form" ng-submit='signup()' ui-if="!loginForm">
+    <fieldset>
+      <legend>Signup</legend>
+        <div class="form-group has-success has-feedback">
+          <label>Email</label>
+          <input type="text"
+                 ng-model="signup.email"
+                 class="form-control"
+                 placeholder="Email">
+        </div>
+
+        <div class="form-group has-success has-feedback">
+          <label>Username</label>
+          <input type="text"
+                 ng-model="signup.user"
+                 class="form-control"
+                 placeholder="Username">
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" 
+          		 ng-model="signup.pass"
+                 class="form-control"
+                 placeholder="Password">
+        </div>
+
+    </fieldset>
+    <hr>
+
+    <button class="btn btn-primary btn-block">
+      Signup
+    </button>
+  	</form>
+  	
+  	<br/>
+    <button class="btn btn-primary btn-block" ng-click="goTo('/');">
+      Cancel
+    </button>
+
+ </div>
+</div>

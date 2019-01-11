@@ -1,0 +1,43 @@
+<div class="scrollable" ui-state="searchBar">
+
+  <div class="scrollable-header"><h1>Boxes</h1></div>
+  <div class="scrollable-content" ui-scroll-bottom='bottomReached()'>
+  
+  <div ng-if="displayProducts">
+	<div class="list-group">
+
+	  <div class="list-group-item">
+	  <div class="row">
+	  <div class="col-sm-1">SKU</div>
+	  <div class="col-sm-4">Name</div>
+	  <div class="col-sm-1">Quantity</div>
+	  <div class="col-sm-4 hidden-xs">
+		  <div class="col-sm-2" ng-repeat="price in products[0].prices">{{price[0]}}</div>
+	  </div>
+	  </div>
+	  </div>
+  
+	  <div ng-repeat="item in products" class="list-group-item">
+		<div class="row">
+		<div class="col-sm-1">{{item.sku}}</div>
+		<div class="col-sm-4">{{item.title}}</div>
+		<div class="col-sm-1">{{item.minQty}}</div>
+		<div class="col-sm-4 hidden-xs">
+			<div class="col-sm-2" ng-repeat="price in item.prices">${{price[1]}}</div>
+		</div>
+		<div class="col-sm-1"><button class="btn btn-primary">Add</button></div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  
+  <div ng-if="!displayProducts">
+	<div class="list-group">
+	  <a ng-repeat="item in scrollItems" class="list-group-item" ng-click="selectCategory(item);">
+		{{ item }} <i class="fa fa-chevron-right pull-right"></i>
+	  </a>
+	</div>
+  </div>
+
+  </div>
+</div>

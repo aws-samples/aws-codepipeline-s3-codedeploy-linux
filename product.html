@@ -1,0 +1,46 @@
+<div class="scrollable">
+  	<div class="pageHeader scrollable-header" ng-include="'desktopHeader.html'"></div>
+	<div class="scrollable-content">
+
+	  <div ng-controller="ProductController">
+	  	<div class="section">
+			<div class="row">
+				<div class="col-sm-1">
+				<span><a href="" ng-click="goBack()"><i class="fa fa-chevron-left"></i> Back</a> </span>
+				</div>
+				<div class="col-sm-11">
+				<span><a href="" ng-click="goTo('/')">Home</a> /</span>
+				<span ng-if="product.main!=''"><a href="" ng-click="goTo('/category/'+product.main)">{{product.main}}</a> </span>
+				<span ng-if="product.sub1!=''">/ <a href="" ng-click="goTo('/category/'+product.main+'/'+product.sub1)">{{product.sub1}}</a> </span>
+				<span ng-if="product.sub2!=''">/ <a href="" ng-click="goTo('/category/'+product.main+'/'+product.sub1+'/'+product.sub2)">{{product.sub2}}</a> </span>
+				<span ng-if="product.sub3!=''">/ <a href="" ng-click="goTo('/category/'+product.main+'/'+product.sub1+'/'+product.sub2+'/'+product.sub3)">{{product.sub3}}</a> </span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="section">		
+			<div class="row">
+				<div class="col-sm-2"><h3>{{product.sku}}</h3></div><div class="col-sm-10"><h3 ng-bind-html="product.title"></h3></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2"><img check-image ng-src="{{product.img}}" width="100"/></div>
+				<div class="col-sm-10" ng-bind-html="product.description"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">Minimum Quantity: {{product.minQty}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1">Price</div><div class="col-sm-1" ng-repeat="price in product.prices">{{price[0]}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div><div class="col-sm-1" ng-repeat="price in product.prices"><span ng-if="price[1]>0">{{price[1] | currency:"$":2}}</span><span ng-if="price[1]==0">-</span></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"><input ng-model="product.quantity" class="form-control form-control-sm"/></div><div class="col-sm-9"><button class="btn btn-primary" ng-click="addCart(product.sku)">Add to Cart</button></div>
+			</div>
+		</div><!--section-->
+		
+	  </div>
+
+	</div>
+</div>

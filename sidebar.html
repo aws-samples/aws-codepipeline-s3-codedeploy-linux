@@ -1,0 +1,13 @@
+<div class="scrollable">
+  <h1 class="scrollable-header app-namex">Menu</h1>
+  <div class="scrollable-content">
+    <div class="list-group" ui-turn-off='uiSidebarLeft'>
+      <a class="list-group-item" href="" ng-click="goTo('/')">Home</a>
+	  <a class="list-group-item" href="" ng-click="goTo('/login');" ng-if="!loggedIn">Log In/Sign Up</a><a class="list-group-item" href="" ng-click="goTo('/account');" ng-if="loggedIn">My Account</a>
+      <a class="list-group-item" href="" ui-toggle="uiSidebarRight">Contact Us</a>
+      <a class="list-group-item" href="" ui-turn-on="cartModal">Shopping Cart</a>
+      <div class="list-group-item"><h3>Sections</h3></div>
+	  <a class="list-group-item" href="" ng-repeat="category in rootCategories" ng-click="selectCategory('/', category);">{{category.name}} <i class="fa fa-chevron-right pull-right"></i></a>
+    </div>
+  </div>
+</div>

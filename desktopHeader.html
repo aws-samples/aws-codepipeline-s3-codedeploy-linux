@@ -1,0 +1,109 @@
+<div ui-content-for="modals" >
+
+	<div class="modal modal-overlay" ui-if='cartModal' ui-state='cartModal'>
+	  <div class="modal-dialog">
+		<div class="modal-content" ng-controller="CartController">
+		  <div class="modal-header">
+			<button class="close"
+					ui-turn-off="cartModal">&times;</button>
+			<h4 class="modal-title">Shopping Cart</h4>
+		  </div>
+		  <div class="modal-body">
+		  	<form class="form-inline">
+				<div class="row">
+					<label class="col-sm-1 text-right">SKU</label><div class="col-sm-1 input-group-sm"><input ng-model="quick.sku" placeholder="9-001" class="form-control"></div>
+					<label class="col-sm-1 text-right">Quantity</label><div class="col-sm-1 input-group-sm"><input ng-model="quick.quantity" placeholder="1" class="form-control"></div>
+					<div class="col-sm-1"><button class="btn btn-primary btn-sm" ng-click="quickAdd(quick)">Quick Add</button></div>
+				</div>
+			</form>
+			<div><hr/></div>
+			<div class="list padding">
+				<div class="row" ng-repeat="item in cartItems">
+					<div class="col-sm-1">{{item.sku}}</div>
+					<div class="col-sm-6" ui-turn-off="cartModal" ng-bind-html="item.title" ng-click="goTo('/product/'+item.sku)"></div>
+					<div class="col-sm-1">{{item.quantity}}</div>
+					<div class="col-sm-1">{{item.price | currency:"$":2}}</div>
+					<div class="col-sm-1">{{item.price*item.quantity | currency:"$":2}}</div>
+					<div class="col-sm-2"><button class="btn btn-primary btn-sm" ng-click="deleteCart(item.id)">Delete</button></div>
+				</div>
+			</div>
+			<div><hr/></div>
+		  	<form class="form-inline">
+				<div class="row">
+					<label class="col-sm-1 text-right">Zip</label><div class="col-sm-1 input-group-sm"><input ng-model="estimate.zip" placeholder="01234" class="form-control"></div>
+					<div class="col-sm-1"><button class="btn btn-primary btn-sm" ng-click="estimateShipping(estimate.zip)">Estimate Shipping</button></div>
+				</div>
+			</form>
+		  </div>
+		  <div class="modal-footer">
+			<button ui-turn-off="cartModal" class="btn btn-default">Close</button>
+			<button class="btn btn-primary" ui-turn-off="cartModal" ng-click="goTo('/checkout')">Checkout</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="modal modal-overlay" ui-if='orderModal' ui-state='orderModal'>
+	  <div class="modal-dialog">
+		<div class="modal-content" ng-controller="OrderController">
+		  <div class="modal-header">
+			<button class="close"
+					ui-turn-off="orderModal">&times;</button>
+			<h4 class="modal-title">Order {{order.cart.order_num}}</h4>
+		  </div>
+		  <div class="modal-body">
+		  	<div>
+		  		<div class="col-sm-12">{{order.cart.updated}}</div>
+		  	</div>
+		  	<div>
+		  		<div class="col-sm-12"><h3>Ship To</h3></div>
+		  		<div class="col-sm-12">{{order.cart.ship_name}}</div>
+		  		<div class="col-sm-12" ng-if="order.cart.company">{{order.cart.ship_company}}</div>
+		  		<div class="col-sm-12">{{order.cart.ship_address}}</div>
+		  		<div class="col-sm-12" ng-if="order.cart.address2">{{order.cart.ship_address2}}</div>
+		  		<div class="col-sm-12">{{order.cart.ship_city}} {{order.cart.ship_state}} {{order.cart.ship_zip}}</div>
+		  		<div class="col-sm-12">Phone: {{order.cart.ship_phone}}</div>
+		  		<div class="col-sm-12">Email: {{order.cart.ship_email}}</div>
+		  	</div>
+		  	<div>
+		  		<div class="col-sm-12"><h3>Bill To</h3></div>
+		  		<div class="col-sm-12">{{order.cart.bill_name}}</div>
+		  		<div class="col-sm-12" ng-if="order.cart.company">{{order.cart.bill_company}}</div>
+		  		<div class="col-sm-12">{{order.cart.bill_address}}</div>
+		  		<div class="col-sm-12" ng-if="order.cart.address2">{{order.cart.bill_address2}}</div>
+		  		<div class="col-sm-12">{{order.cart.bill_city}} {{order.cart.bill_state}} {{order.cart.bill_zip}}</div>
+		  	</div>
+			<div class="list padding">
+				<div class="row" ng-repeat="item in order.items">
+					<div class="col-sm-1">{{item.sku}}</div>
+					<div class="col-sm-6" ui-turn-off="cartModal" ng-bind-html="item.title" ng-click="goTo('/product/'+item.sku)"></div>
+					<div class="col-sm-1">{{item.quantity}}</div>
+					<div class="col-sm-1">{{item.price | currency:"$":2}}</div>
+					<div class="col-sm-1">{{item.price*item.quantity | currency:"$":2}}</div>
+				</div>
+				<div class="row" >
+					<div class="col-sm-1"></div>
+					<div class="col-sm-6">Shipping Estimate: {{order.cart.ship_service}}</div>
+					<div class="col-sm-1"></div>
+					<div class="col-sm-1"></div>
+					<div class="col-sm-1">{{order.cart.ship_cost | currency:"$":2}}</div>
+				</div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button ui-turn-off="orderModal" class="btn btn-default">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+</div>
+
+<div class="text-center pageHeader">
+	<div class="col-md-12 text-center" style="background-color:#dbc69f"><img src="img/psa-logo-updated.png" ng-click="goTo('/')" style="height:150px"/></div>
+	<div class="col-md-3" style="background-color:#dbc69f"><a href="" ui-toggle="uiSidebarLeft" style="font-weight:bold;color:#fff">MENU</a></div>
+	<div class="col-md-2" style="background-color:#dbc69f"><a href="" ng-click="goTo('/')" style="font-weight:bold;color:#fff">HOME</a></div>
+	<div class="col-md-2" style="background-color:#dbc69f"><a href="" ng-click="goTo('/login');" ng-if="!loggedIn" style="font-weight:bold;color:#fff">LOG&nbsp;IN/SIGN&nbsp;UP</a><a href="" ng-click="goTo('/account');" ng-if="loggedIn" style="font-weight:bold;color:#fff">MY&nbsp;ACCOUNT</a></div>
+	<div class="col-md-2" style="background-color:#dbc69f"><a href="" ui-toggle="uiSidebarRight" style="font-weight:bold;color:#fff">CONTACT&nbsp;US</a></div>
+	<div class="col-md-3" style="background-color:#dbc69f"><a href="" ui-turn-on="cartModal" style="font-weight:bold;color:#fff">SHOPPING&nbsp;CART</a></div>  	
+</div>

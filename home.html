@@ -1,0 +1,125 @@
+<style>
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+
+<div class="scrollable">  
+  <div class="pageHeader scrollableHeader" ng-include="'desktopHeader.html'"></div>
+  <div class="scrollable-content" ng-controller="HomeController">
+
+  	<div class="section">
+		<div class="col-sm-6" ng-if="catOptions.keywords==''">
+			<span ng-if="catOptions.main!=''"><a href="" ng-click="goTo('/category/'+catOptions.main)">{{catOptions.main}}</a> </span>
+			<span ng-if="catOptions.sub1!=''">/ <a href="" ng-click="goTo('/category/'+catOptions.main+'/'+catOptions.sub1)">{{catOptions.sub1}}</a> </span>
+			<span ng-if="catOptions.sub2!=''">/ <a href="" ng-click="goTo('/category/'+catOptions.main+'/'+catOptions.sub1+'/'+catOptions.sub2)">{{catOptions.sub2}}</a> </span>
+			<span ng-if="catOptions.sub3!=''">/ <a href="" ng-click="goTo('/category/'+catOptions.main+'/'+catOptions.sub1+'/'+catOptions.sub2+'/'+catOptions.sub3)">{{catOptions.sub3}}</a> </span>
+		</div>
+		<div class="col-sm-6" ng-if="catOptions.keywords!=''">
+			<span ng-if="catOptions.keywords!=''"><a href="" ng-click="goTo('/search/'+catOptions.keywords)">Search: {{catOptions.keywords}}</a> </span>
+		</div>
+		<div class="col-sm-6">
+			<div class="input-group">
+				<input type="text" class="form-control form-control-sm" ng-model="catOptions.keywords">
+				<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-click="goTo('/search/'+catOptions.keywords);">search</button>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="section" ng-show="categories.length>0" ui-if='sectionStyle' ui-state="sectionStyle">
+		<div class="col-sm-12"><h3 style="display:inline" ui-turn-off="sectionStyle">Sections</h3></div>
+		<div class="col-md-3 col-sm-6 text-left" ng-repeat="category in categories" >
+			<a href="" ng-click="selectCategory(catOptions.path, category);">{{category.name}}</a>
+		</div>
+    </div>
+
+	<div class="section" ng-show="categories.length>0"  ui-if='!sectionStyle' ui-state="sectionStyle">
+		<div class="col-sm-12"><h3 style="display:inline" ui-turn-on="sectionStyle">Sections</h3></div>
+		<div class="col-md-3 col-sm-6 category" ng-repeat="category in categories" ng-click="selectCategory(catOptions.path, category)">
+			<div class="img-category"><img check-image ng-src="{{category.img}}" height="50px"/></div>
+			<div class="text-center">{{category.name}}</div>
+		</div>
+    </div>
+
+	<div class="section" ng-show="categories.length == 0 && products.length==0">
+		<div class="col-sm-12">No matching products</div>
+	</div>
+	<div class="section" ng-show="products.length>0">
+		<div class="text-center" ng-show="showLoading"><div class="loader" style="display: inline-block"></div></div>
+		<div class="col-sm-12"><h3 >Products</h3></div>
+		<div class="col-sm-12 list-group" ng-if="products.length > 0">
+		  <div class="list-group-item"><div class="row"><div class="col-sm-12">Showing Products {{catOptions.start+1}} - {{catOptions.start+catOptions.number}} of {{catOptions.total}}</div></div></div>
+	  
+		  <div class="list-group-item">
+			  <div class="row text-center">
+			  <div class="col-sm-12">
+			  <button class = "btn btn-primary"
+			  ng-disabled="catOptions.start == 0"
+			  ng-click="pageProducts(-1);"
+			  >
+			  Previous
+			  </button>
+			  <button class = "btn btn-primary"
+			   ng-disabled="catOptions.start+catOptions.number>=catOptions.total"
+			   ng-click="pageProducts(1);"
+			  >Next</button>
+			  </div>
+			  </div>
+		  </div>
+
+		  <div class="list-group-item">
+		  <div class="row">
+		  <div class="col-sm-1"></div>
+		  <div class="col-sm-1">SKU</div>
+		  <div class="col-sm-7">Name</div>
+		  <div class="col-sm-1">Quantity</div>
+		  <div class="col-sm-1">Price</div>
+		  </div>
+		  </div>
+
+		  <span ui-state="product" ui-default="none"/>
+		  <div ng-repeat="item in products" class="list-group-item">
+			<div class="row">
+			<div class="col-sm-1"><img check-image ng-src="{{item.img}}" width="25"/></div>
+			<div class="col-sm-1">{{item.sku}}</div>
+			<div class="col-sm-7"><a href="" ng-click="goTo('/product/'+item.sku)" ng-bind-html="item.title"></a><a href="" ng-if="item.title==null" ng-click="goTo('/product/'+item.sku)">View Product Details</a></div>
+			<div class="col-sm-1">{{item.minQty}}</div>
+			<div class="col-sm-1"><span  ng-repeat="price in item.prices" ng-if="price[0]==item.minQty"><span ng-if="price[1]>0">{{price[1] | currency:"$":2}}</span><span ng-if="price[1]==0">-</span></span></div>
+			<div class="col-sm-1"><!--<button class="btn btn-primary" ng-click="addCart(item.sku,item.minQty)">Add</button>--><button class="btn btn-primary" ng-click="goTo('/product/'+item.sku)">View/Order</button></div>
+			</div>
+		  </div>
+	  
+		  <div class="list-group-item">
+			  <div class="row text-center">
+			  <div class="col-sm-12">
+			  <button class = "btn btn-primary"
+			  ng-disabled="catOptions.start == 0"
+			  ng-click="pageProducts(-1);"
+			  >
+			  Previous
+			  </button>
+			  <button class = "btn btn-primary"
+			   ng-disabled="catOptions.start+catOptions.number>=catOptions.total"
+			   ng-click="pageProducts(1);"
+			  >Next</button>
+			  </div>
+			  </div>
+		  </div>
+	  
+		</div>
+	</div><!--section-->
+    
+  </div>
+</div>
