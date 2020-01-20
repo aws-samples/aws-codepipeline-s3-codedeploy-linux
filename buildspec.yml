@@ -1,0 +1,15 @@
+version: 0.2
+            
+phases:
+  install:
+    runtime-versions:
+      python: 3.7
+    commands:     
+      - python -m venv venv
+      - source venv/bin/activate
+  build:
+    commands:
+      - python tests.py 
+artifacts:    
+  files:
+    - '**/*'
