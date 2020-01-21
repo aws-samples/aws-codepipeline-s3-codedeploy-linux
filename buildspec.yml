@@ -9,7 +9,11 @@ phases:
       - source venv/bin/activate
   build:
     commands:
-      - python tests.py 
+      - python tests.py
+      - export BUCKET=lambda-deployment-artifacts-pipeline-demo
+      - aws cloudformation package --template-file template.yml --s3-bucket $BUCKET --output-template-file outputtemplate.yml
 artifacts:    
+  type: zip
   files:
-    - '**/*'
+    - template.yml
+    - outputtemplate.yml
