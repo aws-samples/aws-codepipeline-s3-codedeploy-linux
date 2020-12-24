@@ -2,17 +2,17 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Sample Deployment</title>
+  <title>這是CICD測試網頁</title>
   <style>
     body {
-      color: #ffffff;
+      color: #fceeee;
       background-color: #000000;
       font-family: Arial, sans-serif;
       font-size: 35px;
     }
     
     h1 {
-      font-size: 500%;
+      font-size: 100%;
       font-weight: normal;
       margin-bottom: 0;
     }
@@ -23,22 +23,29 @@
       margin-bottom: 0;
     }
   </style>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 </head>
 <body>
-  <div align="center">
+  <div align="left">
     <h1>
-      2020/12/03
+      Amazon Ec2 CICD Test Page
     </h1>
+    <input type="text" id='stockInfo'><button onclick="change()" id="changeStock">換支股票看看吧~</button>
+    
   </div>
 
-  <div align="center">
-    <h1>上班好累好累</h1>
-    <h2>今天過得怎樣啊!!!!</h2>
-    <p>這是AWS Ec2 Demo </p>
-  </div>
+  
+    <iframe src="https://s.yimg.com/nb/tw_stock_frontend/scripts/StxChart/StxChart.9d11dfe155.html?sid=" style="width: 560px; height: 360px; border-width: 0;" id='stockframe'></iframe>
+ 
 </body>
 </html>
 <script>
- 
+function change(){
+  var id = $('#stockInfo').val();
+  $("#stockframe").attr({
+      "src" : "https://s.yimg.com/nb/tw_stock_frontend/scripts/StxChart/StxChart.9d11dfe155.html?sid="+id
+    });
+}
+
 </script>
 
