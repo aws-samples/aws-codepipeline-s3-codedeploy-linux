@@ -1,3 +1,3 @@
 #!/bin/bash
-yum install -y httpd
+apt install apache2 -y
 
