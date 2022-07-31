@@ -1,0 +1,11 @@
+rules:
+  - stage-to-prod:
+      description: Automatically promotes a healthy staging deployment to production
+      conditions:
+        - environment='Staging'
+        - health='Healthy'
+        - deployed_for>'10m'
+      actions:
+        - auto_approve_build: test-and-deploy
+        - add_to_deploy_message_thread: >-
+            Build promoted automatically on a healthy staging deploy
