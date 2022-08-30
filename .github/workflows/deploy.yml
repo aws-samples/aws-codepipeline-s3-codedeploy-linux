@@ -44,7 +44,7 @@ deploy:
   steps:
    - name: SSH deploy
      uses: appleboy/ssh-action@master
-      with:
+     with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
